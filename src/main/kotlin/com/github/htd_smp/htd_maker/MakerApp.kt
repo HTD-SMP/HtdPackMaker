@@ -1,5 +1,7 @@
 package com.github.htd_smp.htd_maker
 
+import com.github.htd_smp.htd_pack_reader.HtdPackV1
+import com.github.htd_smp.htd_pack_reader.PackReader
 import com.therandomlabs.curseapi.CurseAPI
 import com.therandomlabs.curseapi.minecraft.MCVersionGroups
 import com.therandomlabs.curseapi.minecraft.MCVersions
@@ -61,6 +63,16 @@ class MakerView : View() {
 //                        CurseAPI.searchProjects(CurseSearchQuery().game(CurseAPI.game(432).get())).get()[0]
                         Global.addedModsProjects.find { it.name() == selected }!!
                     ).openWindow();
+                }
+            }
+            button("Export") {
+                action {
+                    val mods = mutableListOf<HtdPackV1.Mod>()
+                    for(mod in Global.addedModsProjects) {
+                        val latestVer = mod.files().toList().filter{ it.gameVersionStrings().contains(Global.selectedVers.get()) }.last()
+                        mods.add(HtdPackV1.CurseMod(mod.id().toString(), mod.slug(), latestVer.nameOnDisk(),latestVer.id().toString()))
+                    }
+                    println(HtdPackV1(mods, HtdPackV1.ModLoader.FORGE, Global.selectedVers.get()).toJson())
                 }
             }
         }
