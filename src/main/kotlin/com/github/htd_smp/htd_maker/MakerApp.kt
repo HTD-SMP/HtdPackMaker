@@ -72,7 +72,8 @@ class MakerView : View() {
                         val latestVer = mod.files().toList().filter{ it.gameVersionStrings().contains(Global.selectedVers.get()) }.last()
                         mods.add(HtdPackV1.CurseMod(mod.id().toString(), mod.slug(), latestVer.nameOnDisk(),latestVer.id().toString()))
                     }
-                    println(HtdPackV1(mods, HtdPackV1.ModLoader.FORGE, Global.selectedVers.get()).toJson())
+//                    println(HtdPackV1(mods, HtdPackV1.ModLoader.FORGE, Global.selectedVers.get()).toJson())
+                    ExportView(HtdPackV1(mods, HtdPackV1.ModLoader.FORGE, Global.selectedVers.get())).openWindow()
                 }
             }
         }
